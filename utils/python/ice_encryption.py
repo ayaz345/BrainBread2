@@ -206,7 +206,7 @@ class IceKey():
 def readAllBytes(file):
     try:
         with open(file, 'rb') as f:
-            return np.array([v for v in f.read()], dtype=np.uint64)
+            return np.array(list(f.read()), dtype=np.uint64)
     except:
         return np.zeros(1, dtype=np.uint64)
 
@@ -231,7 +231,7 @@ def processFile(file, key, decrypt=False):
 def convertFiles(target_folder, output_folder, target_ext, output_ext, key, decrypt=False):
     for path, _, files in os.walk(target_folder, topdown=True):
         for f in [x.lower() for x in files if x.lower().endswith(target_ext)]:
-            result = processFile('{}/{}'.format(path, f), key, decrypt)
-            with open('{}/{}'.format(output_folder, f.replace(target_ext, output_ext)), 'wb') as out:
+            result = processFile(f'{path}/{f}', key, decrypt)
+            with open(f'{output_folder}/{f.replace(target_ext, output_ext)}', 'wb') as out:
                 out.write(result)
         break
